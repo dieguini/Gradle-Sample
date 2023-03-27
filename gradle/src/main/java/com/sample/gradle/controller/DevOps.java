@@ -16,7 +16,7 @@ public class DevOps {
 
   @PostMapping
   public ResponseEntity<Object> devops(@RequestBody com.sample.gradle.models.DevOps devops) {
-    String newMessage = "Hello "+ devops.getTo()+" your message will be send";
+    String newMessage = "Hello "+ devops.getTo().trim()+" your message will be send";
 
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("message", newMessage);
