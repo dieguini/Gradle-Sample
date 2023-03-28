@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DevOps {
+public class DevOpsModel {
   private String message;
   private String to;
   private String from;
