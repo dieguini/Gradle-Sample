@@ -15,11 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/DevOps")
 public class DevOpsController {
 
-  @GetMapping
-  public ResponseEntity<Object> devops() {
-    return new ResponseEntity<Object>("Hola", HttpStatus.OK);
-  }
-
   @PostMapping
   public ResponseEntity<Object> devops(@RequestBody com.sample.gradle.models.DevOpsModel devops) {
     String newMessage = "Hello "+ devops.getTo().trim()+" your message will be send";
