@@ -2,15 +2,11 @@ package com.sample.gradle.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,32 +17,39 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.gradle.GradleApplication;
+import com.sample.gradle.controllers.AuthenticationController;
+import com.sample.gradle.controllers.DevOpsController;
 import com.sample.gradle.models.DevOpsModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// @SpringBootTest
+// @WebMvcTest(DevOpsController.class)
 @ContextConfiguration(classes=GradleApplication.class)
-@WebMvcTest(DevOpsController.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class DevOpsTest {
 
   ObjectMapper objectMapper = new ObjectMapper();
   
-  @Autowired
+  // @Autowired
   private MockMvc mvc;
   @Autowired
   WebApplicationContext webApplicationContext;
   @Autowired
   DevOpsController devOpsController;
+  @Autowired
+  AuthenticationController authenticationController;
 
   @BeforeEach
   protected void setUp() {
-    mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    mvc = MockMvcBuilders
+          .webAppContextSetup(webApplicationContext)
+          .build();
   }
 
   @Test
 	public void contextLoads() throws Exception {
 		assertThat(devOpsController).isNotNull();
+		assertThat(authenticationController).isNotNull();
 	}
 
   @Test
