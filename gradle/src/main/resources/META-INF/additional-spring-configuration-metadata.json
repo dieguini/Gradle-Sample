@@ -3,5 +3,10 @@
     "name": "jwt.secret",
     "type": "java.lang.String",
     "description": "JWT Secret token string"
+  },
+  {
+    "name": "app.api_key",
+    "type": "java.lang.String",
+    "description": "Api Key for all requests"
   }
 ]}
