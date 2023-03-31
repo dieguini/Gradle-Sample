@@ -29,7 +29,7 @@ jobs:
     - 
       name: Build & Test
       run: |
-        chmod +x gradle/gradlew 
+        sudo chmod +x gradle/gradlew 
         gradle/gradlew -p gradle clean build
         gradle/gradlew -p gradle cleanTest test
 
@@ -53,7 +53,7 @@ jobs:
       -
         name: Build & Test
         run: |
-          chmod +x gradle/gradlew 
+          sudo chmod +x gradle/gradlew 
           gradle/gradlew -p gradle clean build
       # Step 3: Buildx improve
       - 
