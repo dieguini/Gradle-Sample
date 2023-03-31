@@ -29,8 +29,8 @@ jobs:
     - 
       name: Build & Test
       run: |
-        ./gradlew clean build
-        ./gradlew cleanTest test
+        gradle/gradlew -p gradle clean build
+        gradle/gradlew -p gradle cleanTest test
 
   build:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
       -
         name: Build & Test
         run: |
-          ./gradlew clean build
+          gradle/gradlew -p gradle clean build
       # Step 3: Buildx improve
       - 
         name: Set up Docker Buildx
