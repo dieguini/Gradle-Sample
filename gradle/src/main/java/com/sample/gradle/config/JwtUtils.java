@@ -58,7 +58,6 @@ public class JwtUtils implements Serializable {
 
     return Jwts.builder()
         .setClaims(claims)
-        // TODO maybe here add the token
         .setSubject(userDetails.getUsername())
         .claim("authorities", userDetails.getAuthorities())
         .setIssuedAt(new Date(System.currentTimeMillis()))
