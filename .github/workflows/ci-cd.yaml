@@ -38,7 +38,7 @@ jobs:
       id: jacoco_reporter
       uses: PavanMudigonda/jacoco-reporter@v4.8
       with:
-        coverage_results_path: gradleSampleReportDir/jacocoTestReport.xml
+        coverage_results_path: gradle/build/gradleSampleReportDir/jacocoTestReportAction.xml
         coverage_report_name: GradleCoverage
         coverage_report_title: JaCoCo_Gradle_Sample
         github_token: ${{ secrets.GITHUB_TOKEN }}
