@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // @WebMvcTest(DevOpsController.class)
 @ContextConfiguration(classes=GradleApplication.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DevOpsTest {
+public class DevOpsControllerTest {
 
   ObjectMapper objectMapper = new ObjectMapper();
   
