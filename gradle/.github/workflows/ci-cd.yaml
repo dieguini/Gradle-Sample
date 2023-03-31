@@ -27,8 +27,11 @@ jobs:
         java-version: '8'
     # Step 3: Build and Test
     - 
-      name: Build & Test
+      name: Build and Test
       run: |
+        ls -l
+        pwd
+        ls -l gradle/
         sudo chmod +x gradle/gradlew 
         gradle/gradlew -p gradle clean build
         gradle/gradlew -p gradle cleanTest test
