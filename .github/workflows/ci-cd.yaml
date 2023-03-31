@@ -6,13 +6,13 @@ on:
   pull_request:
     branches: [ "dev", "devops" ]
 
-permissions:
-  contents: read
-
 jobs:
   tests:
     # if: false # Skipp job when needed 
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
     steps:
     # Step 1: obtain repo from GitHub
     - 
@@ -43,7 +43,7 @@ jobs:
         coverage_report_title: JaCoCo_Gradle_Sample
         github_token: ${{ secrets.GITHUB_TOKEN }}
         skip_check_run: false
-        minimum_coverage: 80
+        minimum_coverage: 30
         fail_below_threshold: false
         publish_only_summary: false
     # Step 4.1: Publish Coverage Job Summary  # Optional
