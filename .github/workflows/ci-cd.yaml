@@ -68,7 +68,7 @@ jobs:
       DOCKER_IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
       GHCR_REGISTRY: ghcr.io
       GHCR_IMAGE_NAME: ${{ github.repository }}
-    # needs: tests
+    needs: tests
     permissions:
       packages: write
       contents: read
