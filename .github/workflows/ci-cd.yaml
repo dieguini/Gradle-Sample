@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "dev", "devops" ]
+    branches: [ "main", "dev", "devops" ]
 
 jobs:
   tests:
@@ -115,6 +115,8 @@ jobs:
           tags: |
             # dynamically set the branch name and sha as a custom tag
             type=raw,value={{ base_ref }}
+            # set latest tag for main branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
       # Step 6: Build and push
       - 
         name: Build and push Docker image
