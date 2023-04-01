@@ -61,7 +61,7 @@ jobs:
     #     retention-days: 1  
 
   build:
-    if: false # Skipp job when needed 
+    # if: false # Skipp job when needed 
     runs-on: ubuntu-latest
     env:
       DOCKER_REGISTRY: ${{ vars.DOCKER_HUB_NS }}
@@ -121,7 +121,7 @@ jobs:
             # dynamically set the branch name and sha as a custom tag
             type=raw,value={{ base_ref }}
             # set latest tag for main branch
-            type=raw,value=latest,enable=${{ github.base_ref == format('refs/heads/{0}', 'main') }}
+            type=raw,value=latest,enable=${{ github.base_ref == 'main' }}
       # Step 6: Build and push
       - 
         name: Build and push Docker image
