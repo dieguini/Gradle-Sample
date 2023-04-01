@@ -138,9 +138,13 @@ jobs:
       -
         name: TrueTest
         if: ${{ github.event.pull_request.base.ref == 'main' }}
-        run: echo "Is Main"
+        run: |
+          echo ${{ github.event.pull_request.base.ref }}
+          echo "Is Main"
 
       -
         name: FalseTest
         if: ${{ github.event.pull_request.base.ref != 'main' }}
-        run: echo "Is Not Main"
+        run: |
+          echo ${{ github.event.pull_request.base.ref }}
+          echo "Is Not Main"
