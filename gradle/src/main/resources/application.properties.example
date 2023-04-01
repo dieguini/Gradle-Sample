@@ -1,0 +1,9 @@
+# Example Properties File
+
+# Dear Admin,
+# Here you need to add the JWT Secret to be injected to
+# Regards DiegoJS :)
+server.port=8080
+jwt.secret=devsu
+app.api_key=ADD_YOUR_API_KEY
+

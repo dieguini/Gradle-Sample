@@ -1,0 +1,133 @@
+name: Gradle sample 
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main", "dev", "devops" ]
+
+jobs:
+  tests:
+    # if: false # Skipp job when needed 
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+    steps:
+    # Step 1: obtain repo from GitHub
+    - 
+      name: Checkout Code
+      uses: actions/checkout@v3
+    # Step 2: JDK
+    - 
+      name: Setup JDK 1.8
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+    # Step 3: Build and Test
+    - 
+      name: Build & Test
+      run: |
+        chmod +x gradle/gradlew
+        gradle/gradlew -p gradle clean build
+        gradle/gradlew -p gradle cleanTest test
+    # Step 4: Code coverage
+    -
+      name: JaCoCo Code Coverage Report
+      id: jacoco_reporter
+      uses: PavanMudigonda/jacoco-reporter@v4.8
+      with:
+        coverage_results_path: gradle/build/gradleSampleReportDir/test/jacocoTestReport.xml
+        coverage_report_name: GradleCoverage
+        coverage_report_title: JaCoCo_Gradle_Sample
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        skip_check_run: false
+        minimum_coverage: 30
+        fail_below_threshold: false
+        publish_only_summary: false
+    # Step 4.1: Publish Coverage Job Summary  # Optional
+    - 
+      name: Add Coverage Job Summary
+      run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
+        
+    # Step 4.2: uploads the coverage-report.md artifact  # Optional
+    # - 
+    #   name: Upload Code Coverage Artifacts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: code-coverage-report-markdown
+    #     path: */coverage-results.md 
+    #     retention-days: 1  
+
+  build:
+    # if: false # Skipp job when needed 
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REGISTRY: ${{ vars.DOCKER_HUB_NS }}
+      DOCKER_IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+      GHCR_REGISTRY: ghcr.io
+      GHCR_IMAGE_NAME: ${{ github.repository }}
+    needs: tests
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      # Step 1: obtain repo from GitHub
+      - 
+        name: Checkout Code
+        uses: actions/checkout@v3
+      # Step 2: build
+      -
+        name: Build
+        run: |
+          chmod +x gradle/gradlew
+          gradle/gradlew -p gradle clean build
+      # Step 3: Buildx improve
+      - 
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      # Step 4: Log to registries
+      # Step 4.1: Log to ghcr
+      - 
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # Step 4.2: Log to ghcr
+      - 
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          # username: ${{ github.actor }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Step 5: Metadata for image name
+      - 
+        name: Docker metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
+            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE_NAME }}
+          flavor: |
+            latest=auto
+            prefix=
+            suffix=
+          tags: |
+            # dynamically set the branch name and sha as a custom tag
+            type=raw,value={{ base_ref }}
+            # set latest tag for main branch
+            type=raw,value=latest,enable=${{ github.base_ref == 'main' }}
+      # Step 6: Build and push
+      - 
+        name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.tags }}
