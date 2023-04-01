@@ -137,14 +137,14 @@ jobs:
     steps:
       -
         name: TrueTest
-        if: ${{ github.event.pull_request.base.ref == 'main' }}
+        if: ${{ github.base.ref == 'main' }}
         run: |
-          echo ${{ github.event.pull_request.base.ref }}
+          echo ${{ github.base.ref }}
           echo "Is Main"
 
       -
         name: FalseTest
-        if: ${{ github.event.pull_request.base.ref != 'main' }}
+        if: ${{ github.base.ref != 'main' }}
         run: |
-          echo ${{ github.event.pull_request.base.ref }}
+          echo ${{ github.base.ref }}
           echo "Is Not Main"
