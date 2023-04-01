@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    if: false # Skipp job when needed 
+    # if: false # Skipp job when needed 
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -131,20 +131,3 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
-
-  test_branches:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: TrueTest
-        if: ${{ github.base_ref == 'main' }}
-        run: |
-          echo ${{ github.base_ref }}
-          echo "Is Main"
-
-      -
-        name: FalseTest
-        if: ${{ github.base_ref != 'main' }}
-        run: |
-          echo ${{ github.base_ref }}
-          echo "Is Not Main"
