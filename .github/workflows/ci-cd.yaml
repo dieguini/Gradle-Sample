@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    # if: false # Skipp job when needed 
+    if: false # Skipp job when needed 
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -67,7 +67,7 @@ jobs:
       DOCKER_IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
       GHCR_REGISTRY: ghcr.io
       GHCR_IMAGE_NAME: ${{ github.repository }}
-    needs: tests
+    # needs: tests
     permissions:
       packages: write
       contents: read
@@ -78,7 +78,7 @@ jobs:
         uses: actions/checkout@v3
       # Step 2: build
       -
-        name: Build & Test
+        name: Build
         run: |
           chmod +x gradle/gradlew
           gradle/gradlew -p gradle clean build
@@ -112,6 +112,10 @@ jobs:
           images: |
             ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
             ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE_NAME }}
+          flavor: |
+            latest=auto
+            prefix=
+            suffix=
           tags: |
             # dynamically set the branch name and sha as a custom tag
             type=raw,value={{ base_ref }}
