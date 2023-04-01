@@ -61,6 +61,7 @@ jobs:
     #     retention-days: 1  
 
   build:
+    if: false # Skipp job when needed 
     runs-on: ubuntu-latest
     env:
       DOCKER_REGISTRY: ${{ vars.DOCKER_HUB_NS }}
@@ -130,3 +131,16 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
+
+  test_branches:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: TrueTest
+        if: ${{ github.base_ref == 'refs/heads/main' }}
+        run: echo "Is Main"
+
+      -
+        name: FalseTest
+        if: ${{ github.base_ref == 'refs/heads/main' }}
+        run: echo "Is Not Main"
